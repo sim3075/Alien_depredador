@@ -34,19 +34,18 @@ class LinkedList:
 
 class LinkedMatrix:
     def __init__(self, size):
-        self.size = size
-        node = Node("+")
-        self.root = node
         self.ll = LinkedList()
-
-        
         self.ll.add_at_tail("+")
         self.ll.add_at_tail("-")
         self.ll.add_at_tail(" ")
         random = self.ll.traverse()
         random2 = self.ll.traverse()
         random3 = self.ll.traverse()
-    
+        self.size = size
+        node = Node(random)
+        self.root = node
+
+        
         for j in range(self.size-1):
             node.rigth = Node(random)
             node.rigth.left = node
@@ -105,24 +104,79 @@ class Alien:
 class Depredador:
     def __init__(self, linked_matrix):
         self.health = 50
-        self.avatar = None 
         self.linked_matrix = linked_matrix
         self.random_row = random.randint(0,self.linked_matrix.size-1)
         self.random_column = random.randint(0,self.linked_matrix.size-1)
-        self.W = None
-        self.A = None
-        self.S = None
-        self.D = None
-
-    def depredador_position(self):
         self.avatar = self.linked_matrix.add_player(self.random_row, self.random_column, "🤖")
         self.W = self.avatar.up
         self.A = self.avatar.left
         self.S = self.avatar.down
         self.D = self.avatar.rigth
 
+    # def depredador_position(self):
+    #     pass
+        #self.linked_matrix.add_player(self.random_row, self.random_column, "🤖")
+        # self.W = self.avatar.up
+        # self.A = self.avatar.left
+        # self.S = self.avatar.down
+        # self.D = self.avatar.rigth
+
     def depredador_movents(self, movent):
-        pass
+        if movent == "W"  and self.W is not None:
+            if self.W.value == "+":
+                self.health += 10
+                self.avatar = self.W
+                self.S.value = " "
+            elif self.W.value == "-":
+                self.health -= 10
+                self.avatar = self.W
+                self.S.value = " "
+            elif self.W.value == " ":
+                self.health -= 0
+                self.avatar = self.W
+
+        elif movent == "A" and self.A is not None:
+            if self.A.value == "+":
+                self.health += 10
+                self.avatar = self.A
+                self.D.value = " "
+            elif self.A.value == "-":
+                self.health -= 10
+                self.avatar = self.A
+                self.D.value = " "
+            elif self.A.value == " ":
+                self.health -= 0
+                self.avatar = self.A
+                self.D.value = " "
+
+        elif movent == "S" and self.S is not None:
+            if self.S.value == "+":
+                self.health += 10
+                self.avatar = self.S
+                self.W.value = " "
+            elif self.S.value == "-":
+                self.health -= 10
+                self.avatar = self.S
+                self.W.value = " "
+            elif self.S.value == " ":
+                self.health -= 0
+                self.avatar = self.S
+                self.W.value = " "
+        elif movent == "D" and self.D is not None:
+            if self.D.value == "+":
+                self.health += 10
+                self.avatar = self.D
+                self.A.value = " "
+            elif self.D.value == "-":
+                self.health -= 10
+                self.avatar = self.D
+            if self.D.value == " ":
+                self.health += 0
+                self.avatar = self.D
+                self.A.value = " "
+
+
+            
     def depredador_attack(self, movent):
         pass
 
@@ -134,14 +188,24 @@ class GameController:
 
 
 
-lm = LinkedMatrix(3)
+lm = LinkedMatrix(4)
 depre = Depredador(lm)
-depre.depredador_position()
+depre.avatar
+cont = 0
+lm.mostrar()
+while cont == 0:
+    depre.depredador_movents("W")
+    print("////////////////////////////")
+    depre.linked_matrix.mostrar()
+    print("////////////////////////////")
+    depre.depredador_movents("D")
+    depre.linked_matrix.mostrar()
+    print("////////////////////////////")
+    cont+=1
 # lm.add_player(0, 0, 1)
 # lm.add_player(0, 1, 3)
 # lm.add_player(1, 0, 5)
-lm.add_player(1, 1, "👽")
-lm.mostrar()
+# lm.add_player(1, 1, "👽")
 
 
 
